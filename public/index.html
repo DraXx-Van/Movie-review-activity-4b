@@ -1,24 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="CineVault — A premium movie recommendation manager" />
   <title>CineVault — Movie Recommendations</title>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet" />
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
 
   <!-- SIDEBAR -->
   <aside id="sidebar">
     <div class="sidebar-brand">
       <div class="brand-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/>
-          <line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/>
-          <line x1="2" y1="12" x2="22" y2="12"/>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.8"
+          stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18" />
+          <line x1="7" y1="2" x2="7" y2="22" />
+          <line x1="17" y1="2" x2="17" y2="22" />
+          <line x1="2" y1="12" x2="22" y2="12" />
         </svg>
       </div>
       <span class="brand-name accent-text">CineVault</span>
@@ -136,11 +142,31 @@
               <i data-lucide="star" class="label-icon"></i> Rating
             </label>
             <div class="star-selector" id="starSelector">
-              <span class="star" data-value="1"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
-              <span class="star" data-value="2"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
-              <span class="star" data-value="3"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
-              <span class="star" data-value="4"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
-              <span class="star" data-value="5"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+              <span class="star" data-value="1"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"
+                  stroke="currentColor" stroke-width="1">
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                </svg></span>
+              <span class="star" data-value="2"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"
+                  stroke="currentColor" stroke-width="1">
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                </svg></span>
+              <span class="star" data-value="3"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"
+                  stroke="currentColor" stroke-width="1">
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                </svg></span>
+              <span class="star" data-value="4"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"
+                  stroke="currentColor" stroke-width="1">
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                </svg></span>
+              <span class="star" data-value="5"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"
+                  stroke="currentColor" stroke-width="1">
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                </svg></span>
             </div>
             <input type="hidden" id="inputRating" value="0" />
           </div>
@@ -176,7 +202,8 @@
         <i data-lucide="alert-triangle" class="delete-warn-icon"></i>
       </div>
       <h2 class="delete-heading">Delete Movie</h2>
-      <p class="delete-text">This will permanently remove <strong id="deleteMovieName"></strong> from your collection.</p>
+      <p class="delete-text">This will permanently remove <strong id="deleteMovieName"></strong> from your collection.
+      </p>
       <div class="delete-actions">
         <button class="btn-cancel" id="btnCancelDelete">
           <i data-lucide="arrow-left" class="btn-icon-sm"></i> Cancel
@@ -184,6 +211,27 @@
         <button class="btn-danger" id="btnConfirmDelete">
           <i data-lucide="trash-2" class="btn-icon-sm"></i> Delete
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DETAILS MODAL -->
+  <div class="modal-overlay" id="detailsOverlay">
+    <div class="modal card hero details-modal">
+      <button class="modal-close details-close" id="detailsClose"><i data-lucide="x"></i></button>
+      <div class="details-content">
+        <div class="details-poster-wrap">
+          <img id="detailsPoster" src="" alt="Poster" />
+        </div>
+        <div class="details-info">
+          <h2 id="detailsTitle" class="accent-text"></h2>
+          <div class="card-meta details-meta">
+            <span class="genre-pill" id="detailsGenre"></span>
+            <span class="card-stars" id="detailsStars"></span>
+            <div class="rec-badge" id="detailsRecWrap"><span class="rec-dot"></span><span id="detailsRec"></span></div>
+          </div>
+          <p class="details-desc" id="detailsDesc"></p>
+        </div>
       </div>
     </div>
   </div>
@@ -196,4 +244,5 @@
 
   <script src="script.js"></script>
 </body>
+
 </html>

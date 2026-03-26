@@ -50,6 +50,19 @@ body::before {
   pointer-events: none;
 }
 
+/* Elegant mesh grid overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(212,160,83,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(212,160,83,0.02) 1px, transparent 1px);
+  background-size: 50px 50px;
+  pointer-events: none;
+}
+
 .accent-text {
   background: linear-gradient(135deg, #e8e2d8 35%, var(--accent));
   -webkit-background-clip: text;
@@ -245,19 +258,19 @@ body::before {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
-  animation: cardIn 0.3s ease-out both;
+  transition: border-color 0.4s ease, transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s ease;
+  animation: cardIn 0.4s ease-out both;
 }
 
 @keyframes cardIn {
-  from { opacity: 0; transform: translateY(10px); }
+  from { opacity: 0; transform: translateY(15px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
 .movie-card:hover {
   border-color: var(--border2);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 28px rgba(0,0,0,0.3);
+  transform: translateY(-6px);
+  box-shadow: 0 14px 35px rgba(0,0,0,0.5), 0 0 30px rgba(212,160,83,0.06);
 }
 
 /* Poster */
@@ -274,6 +287,11 @@ body::before {
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.movie-card:hover .card-poster img {
+  transform: scale(1.08); /* slight zoom on hover */
 }
 
 .card-poster .poster-placeholder {
@@ -290,10 +308,22 @@ body::before {
 .card-poster::after {
   content: '';
   position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: 60%;
-  background: linear-gradient(to top, rgba(17,17,21,0.95) 0%, transparent 100%);
+  bottom: -2px; /* Pull down slightly to avoid transparent gaps */
+  left: 0; right: 0;
+  height: 75%;
+  background: linear-gradient(
+    to top, 
+    rgba(17,17,21,0.95) 0%, 
+    rgba(17,17,21,0.95) 6%, 
+    rgba(17,17,21,0.6) 35%, 
+    transparent 100%
+  );
   pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.movie-card:hover .card-poster::after {
+  opacity: 0.85; /* slight darkening of gradient on hover to make text pop more */
 }
 
 /* Rec badge overlaid on poster */
@@ -336,10 +366,15 @@ body::before {
 
 /* Card Info — overlaid at bottom of poster via negative margin */
 .card-info {
-  padding: 0 0.9rem 0.7rem;
-  margin-top: -2.8rem;
+  padding: 0 1rem 0.8rem;
+  margin-top: -3.2rem; /* Pull up tighter into the gradient */
   position: relative;
   z-index: 2;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.movie-card:hover .card-info {
+  transform: translateY(-3px); /* Subtly lift the text on hover */
 }
 
 .movie-title {
@@ -384,6 +419,7 @@ body::before {
   line-height: 1.45;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   margin-top: 0.3rem;
@@ -684,6 +720,81 @@ body::before {
 
 .toast.show { transform: translateY(0); }
 .toast-icon { width: 13px; height: 13px; color: var(--up); flex-shrink: 0; }
+
+/* ── DETAILS MODAL ────────────────────────────────────────── */
+.movie-card { cursor: pointer; }
+.details-modal { max-width: 650px; padding: 0; overflow: hidden; background: var(--bg2); }
+.details-content { display: flex; flex-direction: column; }
+
+.details-poster-wrap { 
+  width: 100%; 
+  aspect-ratio: 16/9; 
+  position: relative;
+  background: #09090b;
+}
+
+.details-poster-wrap img { 
+  width: 100%; height: 100%; 
+  object-fit: cover; 
+  object-position: center 25%;
+}
+
+.details-poster-wrap::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to top, var(--bg2) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+.details-info { 
+  padding: 0 1.8rem 2rem; 
+  margin-top: -3.5rem; 
+  position: relative; 
+  z-index: 2; 
+}
+
+.details-info h2 { 
+  font-size: 1.8rem; 
+  font-weight: 700; 
+  margin-bottom: 0.6rem; 
+  line-height: 1.15; 
+  word-wrap: break-word;
+}
+
+.details-meta { margin-bottom: 1.2rem; }
+.details-desc { color: var(--text2); font-size: 0.95rem; line-height: 1.6; }
+
+.details-close { 
+  position: absolute; 
+  top: 1.2rem; right: 1.2rem; 
+  z-index: 10; 
+  background: rgba(9,9,11,0.6); 
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+@media (min-width: 600px) {
+  .details-content { flex-direction: row; }
+  .details-poster-wrap { 
+    width: 40%; 
+    aspect-ratio: 2/3; 
+    height: auto; 
+  }
+  .details-poster-wrap img { object-position: center; }
+  .details-poster-wrap::after { 
+    background: linear-gradient(to right, var(--bg2) 0%, transparent 100%); 
+    left: auto; right: 0; width: 100%; 
+    background: linear-gradient(to right, transparent 0%, var(--bg2) 100%); 
+  }
+  .details-info { 
+    width: 60%; 
+    padding: 2.5rem 2.5rem 2.5rem 0.5rem; 
+    margin-top: 0; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+  }
+  .details-info h2 { font-size: 1.6rem; }
+}
 
 /* ═══════════════════════════════════════════════════════════
    RESPONSIVE

@@ -4,47 +4,57 @@
 
 const API = '/movies';
 
-const movieGrid   = document.getElementById('movieGrid');
-const emptyState  = document.getElementById('emptyState');
-const btnAdd      = document.getElementById('btnAdd');
-const pageTitle   = document.getElementById('pageTitle');
-const pageSub     = document.getElementById('pageSub');
+const movieGrid = document.getElementById('movieGrid');
+const emptyState = document.getElementById('emptyState');
+const btnAdd = document.getElementById('btnAdd');
+const pageTitle = document.getElementById('pageTitle');
+const pageSub = document.getElementById('pageSub');
 
-const navItems    = document.querySelectorAll('.nav-item');
-const menuToggle  = document.getElementById('menuToggle');
-const sidebar     = document.getElementById('sidebar');
+const navItems = document.querySelectorAll('.nav-item');
+const menuToggle = document.getElementById('menuToggle');
+const sidebar = document.getElementById('sidebar');
 
-const statTotal   = document.getElementById('statTotal');
-const statRec     = document.getElementById('statRec');
-const countAll    = document.getElementById('countAll');
-const count5      = document.getElementById('count5');
-const count4      = document.getElementById('count4');
-const count3      = document.getElementById('count3');
-const count2      = document.getElementById('count2');
-const count1      = document.getElementById('count1');
+const statTotal = document.getElementById('statTotal');
+const statRec = document.getElementById('statRec');
+const countAll = document.getElementById('countAll');
+const count5 = document.getElementById('count5');
+const count4 = document.getElementById('count4');
+const count3 = document.getElementById('count3');
+const count2 = document.getElementById('count2');
+const count1 = document.getElementById('count1');
 
 const modalOverlay = document.getElementById('modalOverlay');
-const modalTitle   = document.getElementById('modalTitle');
-const modalClose   = document.getElementById('modalClose');
-const movieForm    = document.getElementById('movieForm');
-const editIdInput  = document.getElementById('editId');
-const inputTitle   = document.getElementById('inputTitle');
-const inputGenre   = document.getElementById('inputGenre');
-const inputDesc    = document.getElementById('inputDesc');
-const inputRating  = document.getElementById('inputRating');
-const inputRec     = document.getElementById('inputRec');
+const modalTitle = document.getElementById('modalTitle');
+const modalClose = document.getElementById('modalClose');
+const movieForm = document.getElementById('movieForm');
+const editIdInput = document.getElementById('editId');
+const inputTitle = document.getElementById('inputTitle');
+const inputGenre = document.getElementById('inputGenre');
+const inputDesc = document.getElementById('inputDesc');
+const inputRating = document.getElementById('inputRating');
+const inputRec = document.getElementById('inputRec');
 const starSelector = document.getElementById('starSelector');
-const toggleYes    = document.getElementById('toggleYes');
-const toggleNo     = document.getElementById('toggleNo');
-const btnSubmit    = document.getElementById('btnSubmit');
+const toggleYes = document.getElementById('toggleYes');
+const toggleNo = document.getElementById('toggleNo');
+const btnSubmit = document.getElementById('btnSubmit');
 
-const deleteOverlay    = document.getElementById('deleteOverlay');
-const deleteMovieName  = document.getElementById('deleteMovieName');
-const btnCancelDelete  = document.getElementById('btnCancelDelete');
+const deleteOverlay = document.getElementById('deleteOverlay');
+const deleteMovieName = document.getElementById('deleteMovieName');
+const btnCancelDelete = document.getElementById('btnCancelDelete');
 const btnConfirmDelete = document.getElementById('btnConfirmDelete');
 
-const toast    = document.getElementById('toast');
+const toast = document.getElementById('toast');
 const toastMsg = document.getElementById('toastMsg');
+
+const detailsOverlay = document.getElementById('detailsOverlay');
+const detailsClose   = document.getElementById('detailsClose');
+const detailsTitle   = document.getElementById('detailsTitle');
+const detailsGenre   = document.getElementById('detailsGenre');
+const detailsStars   = document.getElementById('detailsStars');
+const detailsRec     = document.getElementById('detailsRec');
+const detailsRecWrap = document.getElementById('detailsRecWrap');
+const detailsDesc    = document.getElementById('detailsDesc');
+const detailsPoster  = document.getElementById('detailsPoster');
 
 let activeFilter = 'all';
 let pendingDeleteId = null;
@@ -116,7 +126,7 @@ function renderMovies(movies) {
       : '';
 
     return `
-    <div class="movie-card card" style="animation-delay: ${i * 0.03}s">
+    <div class="movie-card card" style="animation-delay: ${i * 0.03}s" onclick="openDetailsModal(${m.id})">
       <div class="card-poster">
         ${posterHtml}
         <div class="card-rec-overlay">
@@ -134,7 +144,7 @@ function renderMovies(movies) {
         </div>
         ${descHtml}
       </div>
-      <div class="card-actions">
+      <div class="card-actions" onclick="event.stopPropagation()">
         <button class="card-btn edit" onclick="openEditModal(${m.id}, '${escAttr(m.title)}', '${escAttr(m.genre)}', ${m.rating}, '${m.recommendation}', \`${escAttr(m.description || '')}\`)">
           <i data-lucide="pencil"></i> Edit
         </button>
@@ -174,7 +184,7 @@ menuToggle.addEventListener('click', () => sidebar.classList.toggle('open'));
 
 document.addEventListener('click', (e) => {
   if (window.innerWidth <= 768 && sidebar.classList.contains('open') &&
-      !sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+    !sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
     sidebar.classList.remove('open');
   }
 });
@@ -278,6 +288,42 @@ function openEditModal(id, title, genre, rating, rec, desc) {
   openModal();
 }
 
+// ── Details ────────────────────────────────────────────────
+function openDetailsModal(id) {
+  const movie = allMovies.find(m => m.id === id);
+  if (!movie) return;
+
+  detailsTitle.textContent = movie.title;
+  detailsGenre.textContent = movie.genre;
+  detailsStars.innerHTML   = renderStars(movie.rating);
+  
+  if (movie.recommendation === 'Yes') {
+    detailsRec.textContent = 'Yes';
+    detailsRecWrap.className = 'rec-badge yes';
+  } else {
+    detailsRec.textContent = 'No';
+    detailsRecWrap.className = 'rec-badge no';
+  }
+
+  detailsDesc.textContent = movie.description || 'No description available for this title.';
+  
+  if (movie.poster) {
+    detailsPoster.src = movie.poster;
+    detailsPoster.style.display = 'block';
+  } else {
+    detailsPoster.style.display = 'none';
+  }
+
+  detailsOverlay.classList.add('open');
+}
+
+function closeDetailsModal() {
+  detailsOverlay.classList.remove('open');
+}
+
+detailsClose.addEventListener('click', closeDetailsModal);
+detailsOverlay.addEventListener('click', (e) => { if (e.target === detailsOverlay) closeDetailsModal(); });
+
 // ── Delete ─────────────────────────────────────────────────
 function openDeleteModal(id, title) {
   pendingDeleteId = id;
@@ -314,4 +360,4 @@ function showToast(msg) {
 function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
 function escAttr(s) { return (s || '').replace(/`/g, '\\`').replace(/'/g, "\\'").replace(/"/g, '&quot;'); }
 
-document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { closeModal(); closeDeleteModal(); } });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { closeModal(); closeDeleteModal(); closeDetailsModal(); } });
