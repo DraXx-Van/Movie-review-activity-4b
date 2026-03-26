@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="CineVault — A premium movie recommendation manager" />
+  <title>CineVault — Movie Recommendations</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/>
+          <line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/>
+          <line x1="2" y1="12" x2="22" y2="12"/>
+        </svg>
+      </div>
+      <span class="brand-name accent-text">CineVault</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Browse</div>
+      <button class="nav-item active" data-rating="all" id="navAll">
+        <i data-lucide="layout-grid" class="nav-icon"></i>
+        <span>All Movies</span>
+        <span class="nav-count" id="countAll">0</span>
+      </button>
+
+      <div class="nav-section-label">By Rating</div>
+      <button class="nav-item" data-rating="5">
+        <i data-lucide="star" class="nav-icon"></i>
+        <span>5 Stars</span>
+        <span class="nav-count" id="count5">0</span>
+      </button>
+      <button class="nav-item" data-rating="4">
+        <i data-lucide="star" class="nav-icon"></i>
+        <span>4 Stars</span>
+        <span class="nav-count" id="count4">0</span>
+      </button>
+      <button class="nav-item" data-rating="3">
+        <i data-lucide="star" class="nav-icon"></i>
+        <span>3 Stars</span>
+        <span class="nav-count" id="count3">0</span>
+      </button>
+      <button class="nav-item" data-rating="2">
+        <i data-lucide="star" class="nav-icon"></i>
+        <span>2 Stars</span>
+        <span class="nav-count" id="count2">0</span>
+      </button>
+      <button class="nav-item" data-rating="1">
+        <i data-lucide="star" class="nav-icon"></i>
+        <span>1 Star</span>
+        <span class="nav-count" id="count1">0</span>
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="stat-card card">
+        <div class="stat-label">Total Movies</div>
+        <div class="stat-value" id="statTotal">0</div>
+      </div>
+      <div class="stat-card card">
+        <div class="stat-label">Recommended</div>
+        <div class="stat-value up" id="statRec">0</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div id="mainContent">
+    <header id="topBar">
+      <div class="topbar-left">
+        <button class="menu-toggle" id="menuToggle">
+          <i data-lucide="menu"></i>
+        </button>
+        <div>
+          <h1 class="page-title accent-text" id="pageTitle">All Movies</h1>
+          <p class="page-sub" id="pageSub">Showing all recommendations</p>
+        </div>
+      </div>
+      <button class="btn-add" id="btnAdd">
+        <i data-lucide="plus"></i>
+        <span>Add Movie</span>
+      </button>
+    </header>
+
+    <main id="movieGrid" class="movie-grid"></main>
+
+    <div id="emptyState" class="empty-state" style="display:none;">
+      <i data-lucide="film" class="empty-icon-svg"></i>
+      <p>No movies found for this filter.</p>
+      <button class="btn-ghost" onclick="document.querySelector('.nav-item[data-rating=all]').click()">View All</button>
+    </div>
+  </div>
+
+  <!-- ADD / EDIT MODAL -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal card hero">
+      <div class="modal-header">
+        <h2 id="modalTitle" class="accent-text">Add Movie</h2>
+        <button class="modal-close" id="modalClose"><i data-lucide="x"></i></button>
+      </div>
+      <form id="movieForm" autocomplete="off">
+        <input type="hidden" id="editId" value="" />
+
+        <div class="form-group">
+          <label for="inputTitle">
+            <i data-lucide="clapperboard" class="label-icon"></i> Title
+          </label>
+          <input type="text" id="inputTitle" placeholder="e.g. Inception" required />
+        </div>
+
+        <div class="form-group">
+          <label for="inputGenre">
+            <i data-lucide="tags" class="label-icon"></i> Genre
+          </label>
+          <input type="text" id="inputGenre" placeholder="e.g. Sci-Fi" required />
+        </div>
+
+        <div class="form-group">
+          <label for="inputDesc">
+            <i data-lucide="align-left" class="label-icon"></i> Description
+          </label>
+          <textarea id="inputDesc" placeholder="Short description or review..." rows="3"></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group" style="flex:1">
+            <label>
+              <i data-lucide="star" class="label-icon"></i> Rating
+            </label>
+            <div class="star-selector" id="starSelector">
+              <span class="star" data-value="1"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+              <span class="star" data-value="2"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+              <span class="star" data-value="3"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+              <span class="star" data-value="4"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+              <span class="star" data-value="5"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+            </div>
+            <input type="hidden" id="inputRating" value="0" />
+          </div>
+
+          <div class="form-group" style="flex:1">
+            <label>
+              <i data-lucide="thumbs-up" class="label-icon"></i> Recommend?
+            </label>
+            <div class="toggle-group">
+              <button type="button" class="toggle-btn active" data-rec="Yes" id="toggleYes">
+                <i data-lucide="check-circle" class="toggle-icon"></i> Yes
+              </button>
+              <button type="button" class="toggle-btn" data-rec="No" id="toggleNo">
+                <i data-lucide="x-circle" class="toggle-icon"></i> No
+              </button>
+            </div>
+            <input type="hidden" id="inputRec" value="Yes" />
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit" id="btnSubmit">
+          <i data-lucide="save" class="btn-icon"></i>
+          <span>Save Movie</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- DELETE CONFIRM -->
+  <div class="modal-overlay" id="deleteOverlay">
+    <div class="modal card hero delete-modal">
+      <div class="delete-icon-wrap">
+        <i data-lucide="alert-triangle" class="delete-warn-icon"></i>
+      </div>
+      <h2 class="delete-heading">Delete Movie</h2>
+      <p class="delete-text">This will permanently remove <strong id="deleteMovieName"></strong> from your collection.</p>
+      <div class="delete-actions">
+        <button class="btn-cancel" id="btnCancelDelete">
+          <i data-lucide="arrow-left" class="btn-icon-sm"></i> Cancel
+        </button>
+        <button class="btn-danger" id="btnConfirmDelete">
+          <i data-lucide="trash-2" class="btn-icon-sm"></i> Delete
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toast" class="toast">
+    <i data-lucide="check-circle" class="toast-icon" id="toastIcon"></i>
+    <span id="toastMsg"></span>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
